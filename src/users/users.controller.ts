@@ -1,7 +1,8 @@
-import { Controller, Post, Body, BadRequestException, UseGuards, Req, Put, UseInterceptors, UploadedFile, UsePipes, ValidationPipe, UnauthorizedException, Get, Param, NotFoundException } from '@nestjs/common';
+import { Controller, Post, Body, BadRequestException, UseGuards, Req } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { User } from './user.entity';
-import { Auth } from 'typeorm';
+import { AuthGuard } from '@nestjs/passport';
+import { Request } from 'express'; 
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 export class CreateUserDto {
   username: string;
@@ -53,6 +54,24 @@ export class UsersController {
     return { message: 'New OTP has been sent to your email' };
   }
 
-  
+  @Post('login')
+  async login(@Body() loginDto: LoginDto): Promise<{ accessToken: string }> {
+    const { email, password } = loginDto;
+    return this.usersService.login(email, password);
+  }
+
+
+  @Post('logout')
+  @UseGuards(JwtAuthGuard)
+  async logout(@Req() req: Request): Promise<{ message: string }> {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) {
+      throw new BadRequestException('No token provided');
+    }
+    await this.usersService.logout(token);
+    return { message: 'Logged out successfully' };
+  }
+
+   
 
 }

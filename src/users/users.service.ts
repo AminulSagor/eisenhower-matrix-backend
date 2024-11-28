@@ -1,10 +1,11 @@
-import { Injectable, ConflictException, BadRequestException, NotFoundException} from '@nestjs/common';
+import { Injectable, ConflictException, BadRequestException, NotFoundException, UnauthorizedException} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import { OtpService } from 'src/otp/otp.service';
 import { CreateUserDto } from './users.controller';
 import { JwtService } from '@nestjs/jwt';
+import { TokenBlacklist } from 'src/auth/TokenBlacklist.entity';
 
 
 @Injectable()
@@ -12,8 +13,11 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
+    @InjectRepository(TokenBlacklist)
+    private tokenBlacklistRepository: Repository<TokenBlacklist>,
     private readonly otpService: OtpService,
     private readonly jwtService: JwtService,
+    
 
   ) {}
 
@@ -65,5 +69,33 @@ export class UsersService {
     await this.otpService.generateOtp(email);
     
   }
+
+
+  async login(email: string, password: string): Promise<{ accessToken: string }> {
+    const user = await this.findByEmail(email);
+    if (!user) {
+      throw new UnauthorizedException('Email not found.');
+    }
+
+    if (password!=user.password) {
+      throw new UnauthorizedException('Password not matched.');
+    }
+
+    const payload = { username: user.username, sub: user.id };
+    const accessToken = this.jwtService.sign(payload);
+
+    return { accessToken };
+  }
+
+  async logout(token: string): Promise<void> {
+    await this.blacklistToken(token);
+  }
+
+  async blacklistToken(token: string): Promise<void> {
+    const blacklistedToken = this.tokenBlacklistRepository.create({ token });
+    await this.tokenBlacklistRepository.save(blacklistedToken);
+  }
+
+  
 
 }
