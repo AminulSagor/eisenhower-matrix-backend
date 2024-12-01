@@ -24,6 +24,6 @@ import { TokenBlacklist } from 'src/auth/TokenBlacklist.entity';
   ],
   providers: [JwtStrategy,UsersService, OtpService],
   controllers: [UsersController],
-  exports: [PassportModule, JwtStrategy,UsersService],
+  exports: [PassportModule, JwtStrategy,UsersService, TypeOrmModule],
 })
 export class UsersModule {}

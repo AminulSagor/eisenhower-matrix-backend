@@ -1,5 +1,6 @@
 // src/notes/entities/note.entity.ts
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from 'src/users/user.entity';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 
 @Entity()
 export class Note {
@@ -17,4 +18,7 @@ export class Note {
 
   @Column()
   createdAt: string; 
+
+  @ManyToOne(() => User, (user) => user.notes, { onDelete: 'CASCADE' }) 
+  user: User;
 }

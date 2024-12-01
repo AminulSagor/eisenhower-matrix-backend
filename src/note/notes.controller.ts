@@ -1,5 +1,5 @@
 // src/notes/notes.controller.ts
-import { Controller, Post, Body, Get, UseGuards, Delete, Param, HttpException, HttpStatus, Put, NotFoundException } from '@nestjs/common';
+import { Controller, Post, Body, Get, UseGuards, Delete, Param, HttpException, HttpStatus, Put, NotFoundException, Req } from '@nestjs/common';
 import { NotesService } from './notes.service';
 import { CreateNoteDto } from './dto/create-note.dto';
 import { Note } from './note.entity';
@@ -11,14 +11,16 @@ export class NotesController {
   
   @UseGuards(JwtAuthGuard)
   @Post()
-  async create(@Body() createNoteDto: CreateNoteDto): Promise<Note> {
-    return this.notesService.create(createNoteDto);
+  async create(@Req() request,@Body() createNoteDto: CreateNoteDto): Promise<Note> {
+    const userId = request.user.id; 
+    return this.notesService.create(createNoteDto,userId);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  async findAll(): Promise<Note[]> {
-    return this.notesService.findAll();
+  async findAll(@Req() request): Promise<Note[]> {
+    const userId = request.user.id; // Extract the authenticated user's ID
+    return this.notesService.findAllByUser(userId);
   }
 
 
