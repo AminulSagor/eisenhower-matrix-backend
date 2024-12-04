@@ -6,7 +6,7 @@ import { RedisModule } from '@nestjs-modules/ioredis';
   imports: [
     RedisModule.forRoot({
       type: 'single', 
-      url: process.env.REDIS_URL, 
+      url: process.env.REDIS_URL || 'redis://default:yUITpgwBinuhnBixdNRtxoXzRcQgtFdZ@redis.railway.internal:6379', 
     }),
   ],
   providers: [OtpService],
