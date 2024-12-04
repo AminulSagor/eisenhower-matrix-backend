@@ -32,8 +32,8 @@ export class NotesService {
 
   async findAllByUser(userId: number): Promise<Note[]> {
     return await this.notesRepository.find({
-      where: { user: { id: userId } }, // Filter by user ID
-      relations: ['user'], // Include user relation if needed
+      where: { user: { id: userId } },
+      relations: ['user'], 
     });
   }
 

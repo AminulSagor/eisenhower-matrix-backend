@@ -87,6 +87,10 @@ export class UsersService {
     return { accessToken };
   }
 
+  async findById(id: number): Promise<User | null> {
+    return this.usersRepository.findOne({ where: { id } });
+  }
+
   async logout(token: string): Promise<void> {
     await this.blacklistToken(token);
   }

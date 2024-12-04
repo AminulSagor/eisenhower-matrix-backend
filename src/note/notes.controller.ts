@@ -19,7 +19,7 @@ export class NotesController {
   @UseGuards(JwtAuthGuard)
   @Get()
   async findAll(@Req() request): Promise<Note[]> {
-    const userId = request.user.id; // Extract the authenticated user's ID
+    const userId = request.user.id; 
     return this.notesService.findAllByUser(userId);
   }
 

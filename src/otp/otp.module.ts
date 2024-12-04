@@ -5,11 +5,11 @@ import { RedisModule } from '@nestjs-modules/ioredis';
 @Module({
   imports: [
     RedisModule.forRoot({
-      type: 'single',
-      url: 'redis://localhost:6379',
+      type: 'single', 
+      url: process.env.REDIS_URL, 
     }),
   ],
   providers: [OtpService],
-  exports: [OtpService], 
+  exports: [OtpService],
 })
 export class OtpModule {}
