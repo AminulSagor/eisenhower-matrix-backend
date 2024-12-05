@@ -25,8 +25,10 @@ export class NotesController {
 
   @UseGuards(JwtAuthGuard)
 @Get('filter')
-async findNotesByType(@Req() request, @Body('type') type: string): Promise<Note[]> {
+async findNotesByType(@Req() request,@Param() query: { type: string }): Promise<Note[]> {
   const userId = request.user.id;
+
+  const { type } = query;
 
   if (!type) {
     throw new HttpException('Type is required', HttpStatus.BAD_REQUEST);
