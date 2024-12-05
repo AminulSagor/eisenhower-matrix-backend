@@ -1,4 +1,3 @@
-// src/notes/entities/note.entity.ts
 import { User } from 'src/users/user.entity';
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 
