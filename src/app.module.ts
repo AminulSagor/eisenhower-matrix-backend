@@ -14,9 +14,8 @@ import { ConfigModule } from '@nestjs/config';
     ConfigModule.forRoot(), 
     TypeOrmModule.forRoot({
       type: 'postgres',
-      url: process.env.DATABASE_URL, // Use single URL for connection
+      url: process.env.DATABASE_URL, 
       entities: [User, Note, TokenBlacklist],
-      synchronize: process.env.NODE_ENV !== 'production', 
     }),
     UsersModule,
     NotesModule
