@@ -16,6 +16,7 @@ import { ConfigModule } from '@nestjs/config';
       type: 'postgres',
       url: process.env.DATABASE_URL, 
       entities: [User, Note, TokenBlacklist],
+      synchronize: true, 
     }),
     UsersModule,
     NotesModule
