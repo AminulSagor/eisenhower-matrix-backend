@@ -17,7 +17,7 @@ import { TokenBlacklist } from 'src/auth/TokenBlacklist.entity';
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       secret: 'secret-key',  
-      signOptions: { expiresIn: '1000m' }, 
+      signOptions: { expiresIn: '72000m' }, 
     }),
     TypeOrmModule.forFeature([User]),
     OtpModule,

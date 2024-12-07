@@ -37,14 +37,6 @@ export class NotesService {
     });
   }
 
-  async findNotesByType(userId: number, type: string): Promise<Note[]> {
-    return this.notesRepository.find({
-      where: {
-        user: { id: userId },
-        type: type,
-      },
-    });
-  }
   
 
   async deleteNoteById(id: string): Promise<boolean> {

@@ -24,33 +24,6 @@ export class NotesController {
   }
 
   @UseGuards(JwtAuthGuard)
-@Get('filter')
-async findNotesByType(@Req() request,@Param() query: { type: string }): Promise<Note[]> {
-  const userId = request.user.id;
-
-  const { type } = query;
-
-  if (!type) {
-    throw new HttpException('Type is required', HttpStatus.BAD_REQUEST);
-  }
-
-  const validTypes = [
-    'Important and urgent',
-    'Important and not urgent',
-    'Not important and urgent',
-    'Not important and not urgent',
-  ];
-
-  if (!validTypes.includes(type)) {
-    throw new HttpException('Invalid type', HttpStatus.BAD_REQUEST);
-  }
-
-  return this.notesService.findNotesByType(userId, type);
-}
-
-
-
-  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async deleteNoteById(@Param('id') id: string): Promise<{ message: string }> {
     const deleted = await this.notesService.deleteNoteById(id);
