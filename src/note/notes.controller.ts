@@ -20,6 +20,7 @@ export class NotesController {
   @Get()
   async findAll(@Req() request): Promise<Note[]> {
     const userId = request.user.id; 
+    console.log(userId);
     return this.notesService.findAllByUser(userId);
   }
 
