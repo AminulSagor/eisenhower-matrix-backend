@@ -52,7 +52,7 @@ export class UsersService {
     { username: userData.username, email, password: userData.password, verified: true} 
   );
 
-  const payload = { email: userData.email, username: userData.username };
+  const payload = { email: email,  sub: userData.id };
     const token = this.jwtService.sign(payload); 
 
     return { token };
